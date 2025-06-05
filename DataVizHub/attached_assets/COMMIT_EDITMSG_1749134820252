@@ -1,0 +1,7 @@
+Implement LBV predictions for all hydrocarbons and add unit conversion
+
+Adds functionality to predict LBV for all hydrocarbons and includes a toggle for cm/s or m/s output.
+
+Replit-Commit-Author: Agent
+Replit-Commit-Session-Id: 926ab4ea-a99a-4f39-9f37-1056c5e54c31
+Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/551ba8bc-09b1-4f08-9d5d-b8b3e845f1f8/595e6f01-bc7e-4234-ae27-26fb67ab49b7.jpg

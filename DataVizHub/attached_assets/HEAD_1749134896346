@@ -1,0 +1,7 @@
+0000000000000000000000000000000000000000 134f72636561fbeed8a7551bb57de82160c98c91 sitag80541 <43519608-sitag80541@users.noreply.replit.com> 1749133289 +0000	commit (initial): Initial commit
+134f72636561fbeed8a7551bb57de82160c98c91 bc45010617e4b358c6b4ee780b307fe2aceb6dac sitag80541 <43519608-sitag80541@users.noreply.replit.com> 1749133289 +0000	commit: Started building your app
+bc45010617e4b358c6b4ee780b307fe2aceb6dac f6aaa06e6d667585325c8c43071e9e9a60d55409 sitag80541 <43519608-sitag80541@users.noreply.replit.com> 1749133426 +0000	commit: Deploy web app to predict laminar burning velocity from direct input
+f6aaa06e6d667585325c8c43071e9e9a60d55409 7d9bbe088473ded3274b6b61711ba90283ff5be3 sitag80541 <43519608-sitag80541@users.noreply.replit.com> 1749133459 +0000	commit: Improve the loading of the prediction model and ensure its reliability
+7d9bbe088473ded3274b6b61711ba90283ff5be3 6b49e3ab21213d88c1de6cb451665a807d4bae56 sitag80541 <43519608-sitag80541@users.noreply.replit.com> 1749133711 +0000	commit: Refine input parameters and instructions for the LBV prediction model
+6b49e3ab21213d88c1de6cb451665a807d4bae56 47c9fb1741b3afa534f19bbc4b0ff7b26906cd6c sitag80541 <43519608-sitag80541@users.noreply.replit.com> 1749134000 +0000	commit: Expand the selection of fuels available for laminar burning velocity prediction
+47c9fb1741b3afa534f19bbc4b0ff7b26906cd6c 15ae2eb9c684a3ed07e2f9402c7ed5e5ce39514a sitag80541 <43519608-sitag80541@users.noreply.replit.com> 1749134408 +0000	commit: Implement LBV predictions for all hydrocarbons and add unit conversion
