@@ -22,7 +22,7 @@ def load_data():
     """Load and cache the dataset"""
     try:
         # Try to load from the uploaded file path
-        csv_path = "attached_assets/final_dataset_after_preprocessing (1)_1749135031882.csv"
+        csv_path = "DataVizHub/attached_assets/final_dataset_after_preprocessing (1)_1749135031882.csv"
         if os.path.exists(csv_path):
             df = pd.read_csv(csv_path)
         else:
