@@ -70,8 +70,7 @@ def main():
             if model and hasattr(model, 'get_model_info'):
                 model_info = model.get_model_info()
                 if model_info:
-                    st.markdown("### Model Information")
-                    st.markdown(f"**Algorithm:** {model_info.get('model_type', 'Unknown')}")
+                    
                     st.markdown(f"**Hydrocarbons Supported:** {model_info.get('available_hydrocarbons', 0)}")
                     
                     if 'training_scores' in model_info and model_info['training_scores']:
