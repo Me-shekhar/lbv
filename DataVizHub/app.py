@@ -53,6 +53,10 @@ def load_model(data):
     return model
 
 def main():
+    # Initialize session state for history
+    if 'prediction_history' not in st.session_state:
+        st.session_state['prediction_history'] = []
+
     # Sidebar menu
     with st.sidebar:
         st.markdown("""
@@ -61,18 +65,14 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
-        # About Section
         with st.expander("ℹ️ About", expanded=False):
-            # Load model info
             data = load_data()
             model = load_model(data) if data is not None else None
             
             if model and hasattr(model, 'get_model_info'):
                 model_info = model.get_model_info()
                 if model_info:
-                    
                     st.markdown(f"**Hydrocarbons Supported:** {model_info.get('available_hydrocarbons', 0)}")
-                    
                     if 'training_scores' in model_info and model_info['training_scores']:
                         best_model = model_info['model_type']
                         if best_model in model_info['training_scores']:
@@ -80,7 +80,6 @@ def main():
                             r2_score = scores.get('r2_score', 0)
                             rmse = scores.get('rmse', 0)
                             mae = scores.get('mae', 0)
-                            
                             st.markdown(f"**R² Score:** {r2_score:.3f}")
                             st.markdown(f"**RMSE:** {rmse:.2f} cm/s")
                             st.markdown(f"**MAE:** {mae:.2f} cm/s")
@@ -98,63 +97,49 @@ def main():
             st.markdown("• **Overfitting Resistance:** Ensemble method reduces variance")
             st.markdown("• **Interpretability:** Provides insights into combustion physics")
         
-        # Developers Section
         with st.expander("👥 Developers", expanded=False):
             st.markdown("### Development Team")
             st.markdown("**Final Year Mechanical Engineering Students**")
             st.markdown("**Pimpri Chinchwad College of Engineering, Ravet**")
             st.markdown("**Pune, Maharashtra**")
             st.markdown("---")
-            
             st.markdown("**Shekhar Sonar**")
             st.markdown("📧 sonarshekhar641@gmail.com")
             st.markdown("")
-            
             st.markdown("**Sujal Fiske**")
             st.markdown("📧 sujal.fiske_mech22@pccoer.in")
             st.markdown("")
-            
             st.markdown("**Karan Shinde**")
             st.markdown("📧 karan.shinde_mech23@pccoer.in")
         
-        # Mentor/Project Guide Section
         with st.expander("👨‍🏫 Mentor / Project Guide", expanded=False):
             st.markdown("### Project Supervisor")
             st.markdown("")
-            
             st.markdown("**Shawnam**")
             st.markdown("📧 shawnam.ae111@gmail.com")
             st.markdown("🏛️ Department of Aerospace Engineering")
             st.markdown("🎓 Indian Institute of Technology Bombay")
             st.markdown("📍 Mumbai 400076, India")
         
-        # Resources Section
         with st.expander("📚 Resources", expanded=False):
             st.markdown("### References")
-            
             st.markdown("**Textbook:**")
             st.markdown("Turns, S. R., 2020, *An Introduction to Combustion: Concepts and Applications*, McGraw-Hill Education.")
             st.markdown("")
-            
             st.markdown("**Key Research Papers:**")
             st.markdown("---")
-            
             st.markdown("1. *Laminar burning velocity measurements of ethyl valerate-air flames at elevated temperatures with mechanism modifications*")
             st.markdown("**Authors:** Shawnam, Rohit Kumar, E.V. Jithin, Ratna Kishore Velamati, Sudarshan Kumar")
             st.markdown("")
-            
             st.markdown("2. *Experimental measurements of laminar burning velocity of premixed propane-air flames at higher pressure and temperature conditions*")
             st.markdown("**Authors:** Vijay Shinde, Amardeep Fulzele, Sudarshan Kumar")
             st.markdown("")
-            
             st.markdown("3. *Laminar burning velocity measurements of NH3/H2+Air mixtures at elevated temperatures*")
             st.markdown("**Authors:** Shawnam, Pragya Berwal, Muskaan Singh, Sudarshan Kumar")
             st.markdown("")
-            
             st.markdown("4. *Combustion of N-Decane+air Mixtures To Investigate Laminar Burning Velocity Measurements At Elevated Temperatures*")
             st.markdown("**Authors:** Rohit Kumar, Ratna Kishore Velamati, Sudarshan Kumar")
             st.markdown("")
-            
             st.markdown("**Additional Sources:**")
             st.markdown("+ 30 more research papers on laminar burning velocity measurements")
             st.markdown("+ Various hydrocarbon combustion studies")
@@ -287,6 +272,17 @@ def main():
                     prediction_value = prediction
                     unit = "cm/s"
                 
+                # Store prediction in history (temporary, in-memory only)
+                history_entry = {
+                    "Timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "Hydrocarbon": selected_hydrocarbon,
+                    "Temperature (K)": temperature,
+                    "Equivalence Ratio": equivalence_ratio,
+                    "Pressure (atm)": pressure,
+                    "Predicted LBV": f"{prediction_value:.1f} {unit}"
+                }
+                st.session_state['prediction_history'].append(history_entry)
+                
                 # Results section
                 st.markdown("""
                 <div class="results-section">
@@ -348,6 +344,36 @@ def main():
                 
         except Exception as e:
             st.error(f"Prediction failed: {str(e)}")
+
+    # Prediction History Section (in main content, inside an expander)
+    with st.expander("🕒 Prediction History", expanded=True):
+        st.markdown("""
+        <div class="history-section">
+            <p class="section-description">
+                View your previous predictions and input parameters for this session. History is temporary and resets when you close the app.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Display history table
+        if st.session_state['prediction_history']:
+            history_df = pd.DataFrame(st.session_state['prediction_history'])
+            # Rename columns for better readability
+            history_df = history_df.rename(columns={
+                "Timestamp": "Time",
+                "Temperature (K)": "Temp (K)",
+                "Equivalence Ratio": "Eq. Ratio",
+                "Pressure (atm)": "Pressure (atm)",
+                "Predicted LBV": "LBV"
+            })
+            st.dataframe(history_df, use_container_width=True)
+            
+            # Clear history button
+            if st.button("🗑️ Clear History", key="clear_history_btn"):
+                st.session_state['prediction_history'] = []
+                st.rerun()
+        else:
+            st.info("No predictions yet. Make a prediction to see it here.")
 
 if __name__ == "__main__":
     main()
